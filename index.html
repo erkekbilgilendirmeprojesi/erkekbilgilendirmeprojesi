@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erkekleri Bilgilendirme Projesi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.8;
+            font-size: 18px;
+            margin: 0;
+            padding: 0;
+            color: #1a202c;
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 70px; /* Space for fixed navbar */
+        }
+        
+        /* New navbar styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-hidden {
+            transform: translateY(-100%);
+        }
+        
+        .navbar-brand {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu li {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu a {
+            display: block;
+            color: #ecf0f1;
+            padding: 0 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+            line-height: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #e74c3c;
+            border-bottom: 3px solid #e74c3c;
+        }
+        
+        .nav-menu i {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Mobile menu button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 700;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #c0392b;
+            font-size: 1.8rem;
+            margin-top: 40px;
+            border-left: 5px solid #e74c3c;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #16a085;
+            font-size: 1.4rem;
+        }
+        p {
+            margin-bottom: 1.5em;
+            font-size: 1.1rem;
+        }
+        ul, ol {
+            padding-left: 10px;
+            list-style-type: none;
+        }
+        li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.2rem;
+        }
+        ul li:before {
+            content: "\f054";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: #e74c3c;
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+        ul ul li:before {
+            content: "\f0a4";
+            color: #3498db;
+        }
+        .divider {
+            border-top: 2px dashed #cbd5e0;
+            margin: 40px 0;
+        }
+        .highlight {
+            background-color: #fff8f8;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #e74c3c;
+            margin: 30px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        a:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+        }
+        .contact-box {
+            background-color: #f0f7ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        strong {
+            color: #2c3e50;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        footer {
+            background-color: #9b3328;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+        .footer-text {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .social-icons {
+            font-size: 24px;
+        }
+        .social-icons a {
+            color: white;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        .social-icons a:hover {
+            color: #e74c3c;
+            transform: translateY(-3px);
+        }
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border-left: 4px solid #2980b9;
+        }
+        .social-link i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: #e74c3c;
+        }
+        .social-link:hover {
+            background-color: #edf2f7;
+            border-left: 4px solid #e74c3c;
+            text-decoration: none;
+            transform: translateX(5px);
+        }
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        .btn {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        .btn:hover {
+            background-color: #e74c3c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+        .share-section {
+            background-color: #f0f7ff;
+            padding: 5px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+            border-left: 5px solid #2980b9;
+        }
+
+        /* New share buttons styles */
+        .share-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        
+        .share-btn {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .share-btn i {
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .share-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+        
+        .share-btn.twitter {
+            background-color: #1DA1F2;
+        }
+        
+        .share-btn.instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+        
+        .share-btn.whatsapp {
+            background-color: #25D366;
+        }
+        
+        .share-btn.telegram {
+            background-color: #0088cc;
+        }
+        
+        .share-btn.copy-url {
+            background-color: #6c757d;
+        }
+        
+        .share-btn.copy-content {
+            background-color: #2980b9;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+            
+            .navbar {
+                padding: 0 10px;
+            }
+            
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background-color: #2c3e50;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            .nav-menu.active {
+                max-height: 300px;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+            
+            .nav-menu a {
+                padding: 0 20px;
+                line-height: 50px;
+                border-bottom: 1px solid #3d5166;
+            }
+            
+            .nav-menu a:hover, .nav-menu a.active {
+                border-bottom: 1px solid #3d5166;
+                background-color: #3d5166;
+            }
+            
+            .main-content {
+                padding: 20px;
+                margin-top: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">Erkekleri Bilgilendirme Projesi</a>
+        <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu">
+            <li><a href="#anasayfa" class="active" onclick="showPage('anasayfa')">
+                <i class="fas fa-home"></i>Anasayfa
+            </a></li>
+            <li><a href="#temel-argumanlar" onclick="showPage('temel-argumanlar')">
+                <i class="fas fa-list-ol"></i>Temel Argümanlar
+            </a></li>
+            <li><a href="#tavsiyelerim" onclick="showPage('tavsiyelerim')">
+                <i class="fas fa-lightbulb"></i>Tavsiyelerim
+            </a></li>
+            <li><a href="#yapilacaklar" onclick="showPage('yapilacaklar')">
+                <i class="fas fa-tasks"></i>Yapılacaklar
+            </a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div id="anasayfa" class="page active">
+            <h1>Erkekleri Bilgilendirme Projesi</h1>
+
+            <section>
+                <h2>Hakkımda ve Misyonum</h2>
+                <p>Yıllardır yurtdışında farklı ülkelerde yaşayan birisi olarak Türkiye denen bu kadın yalakası, <strong>ömür törpüsü hurdanın</strong>, erkeklere ne denli yük olduğunu fark edeli 6-7 yıl oldu. Gittiğim hiçbir ülkede, erkeklere bu kadar yük yüklendiğini görmedim.</p>
+                <p>Bu yüzden amacım, Türkiye'de <strong>uyanık ve akıllı olan erkeklerin</strong> neden devletten tiksinmesi ve aidiyet hissetmemesi gerektiğini, direkt ve sade bir biçimde açıklamak olacak.</p>
+                <p>Elbette tüm erkekleri uyandıramam, ama <strong>potansiyeli olanların uyanışını hızlandırabilirim</strong>.</p>
+            </section>
+
+            <div class="divider"></div>
+
+            <section>
+                <h2>Türkiye'de bir erkeğin devletten nefret etmesi için gerekli, aklıma gelen temel sebepler (kısaca)</h2>
+                <ul>
+                    <li>Türkiye'deki devlet, en liberal ve özgürlükçü erkeğe bile <strong>zorunlu köleliği</strong> (askerliği) dayatırken, en milliyetçi geçinen ve "vatanım için ölürüm" diye gezen, profil fotoğrafına Tomris hatun gibi tasvirleri koyan, sözde <strong>"asker doğmuş"</strong> bir kadına 2 saat bile o köleliği dayatmıyor.</li>
+                    <li>Oysa ki, artık orduda görev yapan insanlar, salt fiziksel güçten ziyade <strong>becerilerini kullanıyorlar</strong>, ve bu yüzden kadınların fiziksel gücü potansiyelini dikkate almak büyük oranda önemsiz oluyor.</li>
+                    <li>Türkiye'deki Erkeklerin ortalama ömrü kadınlardan <strong>4-5 yıl daha az</strong> olmasına rağmen, bırakın kadınlarla aynı anda emekli etmeyi, devlet erkekleri <strong>daha geç emekli ediyor</strong>. Şu anda bir kadın bir erkekten ortalama 4-5 yıl uzun yaşamasına rağmen erkek 65'inde emekli olurken, kadın 60'ında emekli olabiliyor.</li>
+                    <li>Devletin kadınlar için resmen bir <strong>bakanlığı</strong> varken, erkekler için herhangi bir bakanlık bulunmuyor. Aile ve kadın bakanlığı diye hemcinslerimizden aldıkları vergilerle yönettikleri bu bakanlık, erkekler için <strong>hiçbir faydalı işte</strong> bulunmuyor. Keza taraflı kararlarıyla evlilikte haklı adamların hayatını mahvedebiliyor.</li>
+                    <li>Devlet sürekli olarak kadınlara <strong>pozitif ayrımcılık</strong> yapıyor:
+                        <ul>
+                            <li>Mesela yakın tarihe kadar <strong>evli olmayan kadınlar</strong> 25 yaşından sonra da yeşil pasaportlarını kullanabilirken erkekler kullanamıyordu. Yani aynı ailenin çocuğu, evli olmayan iki kardeşten erkek olanın yeşil pasaportu 25'inde sebepsiz yere biterken, kadının ki aynen devam ediyordu. Ve devlet denen eşkiya, yıllar sonra bunu daha yeni düzeltti.</li>
+                            <li>Fakat, bugün hala daha emekli maaşı alan biri ve sonra onun eşi vefat ettiğinde, <strong>evli olmayan kızı</strong> emeklilik maaşının 2/3 kadarını alırken, oğlu alamıyor. Mesela anne-baba emekli, ve bugün öldüler. Evli olmayan kızları emli maaşlarının 2/3'ünü alırken, devlet denen manda boku oğullarına bu parayı layık görmüyor. Tabi işler sarpa sarınca aynı sümsük devletin en çok da o oğuldan <strong>fedakarlık bekleyeceğini</strong> unutmayın.</li>
+                            <li>Daha bitmedi. Devletle çalışan bankalar, kurumlar ve dernekler genelde (hatta her zaman) kadınlara <strong>destek veriyor</strong> ama erkeklere hiç vermiyor. Örneğin kadın yatırımcılara veya çiftçilere destek verirlerken, onlara teşvik programları oluştururlarken, erkeklere <strong>hiçbir şey sunmuyorlar</strong>.</li>
+                            <li>Üniversitelerde <strong>35 yaş üstü kadınlar</strong> için özel kontenjan bulunuyor; normalde ilk 10 bin sıralamalı bölüme giremeyen 500 bininci sıradaki bir kadın bile bu kontenjanla girebiliyor.</li>
+                            <li>Tabi daha kadınlara yapılan onca <strong>pozitif ayrımcılığa</strong>, iş yerlerindeki kadın kontenjanlarına, veya nafaka kanunlarında neredeyse her zaman yükün erkeğe yüklenmesine hiç mi hiç girmiyorum bile.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="highlight">
+                <h2>Sonuç Olarak (Uzatmaya Gerek Yok)</h2>
+                <ul>
+                    <li>Tüm bu gerçekler gözümüzün önündeyken, hiçbir erkek bu devletin kendini kayırdığı veya zaten <strong>Ataerkil sistemin böyle olduğu</strong> iddiasına kanmamalıdır (Roma-Bizans-Osmanlı böyle miydi?). Yoksa canı yanmaya devam eder. Bu devlet düpedüz erkeği soyan, ve soyduklarını da genelde kadınlara, kalanını da kendi ahalisine dağıtan, <strong>cibiliyetsiz bir vampirdir</strong>.</li>
+                    <li>Bu devlet erkeklere daha fazla yük olmasına rağmen, <strong>en az hakkı ve desteği</strong> erkeklere veren bir tefecidir. Dikkatli olursanız, ne dediğimi anlarsınız… Devlet denen bu ahır, eline geçen her fırsatta <strong>SADECE ama SADECE</strong> kadınlara destek olurken, başı her sıkıştığında, işler her sarpa sardığında da <strong>SADECE erkeklere yük olup</strong>, onlardan fedakarlık ve cesaret bekleyen bir piç kurusudur.</li>
+                </ul>
+                
+                <p><strong>Dolayısıyla…</strong></p>
+                
+                <ul>
+                    <li>Her erkek ister vatansever Türk milliyetçisi olsun, ister PKK'lı Kürt milliyetçisi olsun, ister Tayyip'çi İslamcı olsun, ister Şengör'cü Ateist olsun, hatta isterse 8 Mart'da kadın haklarını kutlayan bir ODTÜ'lü olsun, yine de her erkek <strong>EN AZINDAN bu gerçeği</strong> aklının kenarında bulundurmalıdır. <strong>Bu devlet sizi kekliyor</strong>.</li>
+                    <li>Yukarıda yazdıklarım gayet <strong>somut gerçeklerdir</strong>, ve hangi ideolojiye sahip olursanız olun, isterseniz Feminist olun, yine de bu gerçekleri aklınızda bulundurun ve bu yazdıklarımı bence not alın ve ara sıra okuyun, ki bu muameleye <strong>alışmayasınız</strong> (kazanda kaynayan kurbağa örneği misali).</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>İletişim</h2>
+                <p>Eğer benimle iletişime geçmek, yahut eklememi istediğiniz veya genel geri dönüş vermek istediğiniz bir konu varsa, şu email adresine yazabilirsiniz:</p>
+                <div class="contact-box">
+                    <i class="fas fa-envelope" style="margin-right: 10px; color: #e74c3c;"></i>
+                    <a href="mailto:erkekbilgilendirmeprojesi@protonmail.com">erkekbilgilendirmeprojesi@protonmail.com</a>
+                </div>
+
+                <div class="share-section">
+                    <h2>İçeriği Paylaş</h2>
+                    <div class="action-buttons">
+                        <button class="btn" onclick="copyToClipboard('anasayfa')">
+                            <i class="fas fa-copy"></i> Panoya Kopyala
+                        </button>
+                    </div>
+                    <div class="share-buttons">
+                        <button class="share-btn twitter" onclick="shareOnTwitter('anasayfa')">
+                            <i class="fab fa-twitter"></i> Twitter'da Paylaş
+                        </button>
+                        <button class="share-btn whatsapp" onclick="shareOnWhatsApp('anasayfa')">
+                            <i class="fab fa-whatsapp"></i> WhatsApp'ta Paylaş
+                        </button>
+                        <button class="share-btn telegram" onclick="shareOnTelegram('anasayfa')">
+                            <i class="fab fa-telegram"></i> Telegram'da Paylaş
+                        </button>
+                        <button class="share-btn copy-url" onclick="copyPageUrl()">
+                            <i class="fas fa-link"></i> Bağlantıyı Kopyala
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="temel-argumanlar" class="page">
+            <h1>Temel Argümanlar</h1>
+
+            <section>
+                <p>Ne zaman erkeklerin bu devletten tiksinmesinin doğal ve haklı olduğunu söylesem, bu devletin bize yük olduğunu savunsam, genelde hep <strong>2 temel konu</strong> üzerinden karşı argüman üretiliyor.</p>
+            </section>
+
+            <div class="divider"></div>
+
+            <section>
+                <h2>Bu Devlet Ataerki mi?</h2>
+                <ul>
+                    <li>Belli Bir grup andaval bu sistemin zaten <strong>Ataerki olduğunu</strong>, bu yüzden erkeklerin şaşırmaması gerektiğini iddia ediyor.</li>
+                    <li>Ataerki denen sistem, devlet bazında Roma, Bizans veya Osmanlı gibi <strong>erkeklere özgürlük tanıyan</strong>, kadınlara ise bazen hiç tanımayan yapılardır. Bugünkü devlet ise bırakın eşit hak tanımayı, <strong>kadınlara daha çok hak ve ayrıcalık</strong> tanıyor.</li>
+                    <li>Aynı şekilde Ataerkil sistemde yönetim ve karar mekanizmasına <strong>sadece erkekler erişebilir</strong>, mesela Roma senatosunda kadın mı vardı? Oysa bugünkü bu kabile devleti, zorunlu köleliğe tabi tuttuğu Liberal erkek ile, kendi milliyetçiliğini yapmasına rağmen bu köleliği dayatmadığı, güya "asker doğmuş" klavye Asenalarına bile <strong>eşit hak veriyor</strong>. Aynı şekilde kadınların da yönetici olmasını bırakın yasaklamayı, <strong>teşvik bile ediyorlar</strong>.</li>
+                    <li>Kısacası bu devlet nereden bakarsanız bakın <strong>Ataerkil değildir</strong>. Aksine kadınlara daha çok torpil geçtiği için <strong>Anaerkil</strong> demek doğru olabilir.</li>
+                </ul>
+
+                <h3>HAZIR KONUSU AÇILMIŞKEN…</h3>
+
+                <ul>
+                    <li>Kaldı ki, kafayı sıyırmış sosyopat Feministlerin her kötü şeyi Ataerkiye atfetmelerine de kanmayın. Bugün sahip olduğumuz <strong>BÜTÜN bilim, felsefe, edebiyat, medeniyet</strong>, ve (çoğunlukla) sanat Ataerkil toplumlardan gelmiştir. Antik Sümer, Babil, Yunan, Pers, Roma, Çin, Hindistan gibi uygarlıklarsan tutun, yine yakında zamandaki Rönesans ve Emperyal Avrupa gibi uygarlıklar bahsi geçen ilimleri bize vermiş, <strong>tamamı Ataerkil toplumlardır</strong>.</li>
+                    <li>Anaerkil toplumlar ise daha yabani, kabilemsi, ve <strong>ASLINDA DAHA ACIMASIZ</strong> Cermenler, Keltler, Afrika kabileleri, Kızılderili kabileleri ve atalarımız Orta Asya Türkleri gibi toplumlardır. Millet en azından bunların bazılarını barışçıl sanıyor ama daha acımasız ve barbarlar. Tek olayları genelde Ataerkil toplumlar gibi <strong>organize olamamaları</strong>. Bu yüzden toplu savaş veya sömürü düzenleri olmuyor, daha çok talan oluyor.</li>
+                    <li>Son olarak kadınların tarih boyunca bilime, sanata, felsefeye vs. katkısının düşük olmasını Ataerkiye atfetmelerine de aldanmayın. <strong>Anaerkil toplumlarda da kadınlar</strong> bu saydıklarıma katkıda bulunmadı. Zaten medeniyet ile ilgili bu ilimler Ataerkil kavramlar. Yani onların iddiası Zencilerin "Avrupalılar sömürmeseydi, Sahra altı Zencileri böyle ilkel kalmazdı" bahanesi kadar saçma. Hadi Ataerki'yi anladık, peki <strong>hangi Anaerkil toplumdan Platon veya Kant çıkmış?</strong></li>
+                    <li>Daha da yazıp ek bölümü uzatmak istemiyorum, araştırıp dediklerimi kendiniz de görebilirsiniz.</li>
+                </ul>
+            </section>
+
+            <div class="divider"></div>
+
+            <section>
+                <h2>Geçmiş Örneklendirmesi</h2>
+                <ul>
+                    <li>Bu kısım bence <strong>en önemli kısım</strong>. Çünkü bazı akıl fukarası feminaziler erkeklere haksızlık yapılmasının adalet olduğunu düşünüyorlar.</li>
+                    <li>Yani onların kavramlarıyla <strong>"Eşitlik" değil, "Adalet"</strong> lazım. Kadın-Erkek eşit hak almamalı, erkekler de az hak almalı, ya da hiç almamalı, ki adalet sağlansın.</li>
+                    <li>Muhtemelen onların da belli kısmı bunun saçma olduğunu biliyor, ama <strong>fındık kadar kuş beyinleriyle</strong> ego tatmini yapmak için savunuyorlar sonuçta.</li>
+                    <li>Her neyse, bu tiplerin kaçırdığı ya da bilerek atladığı en kilit detay, <strong>zaman çizelgesini keyfi seçmeleri</strong>. Bu yüzden bu salaklarla tartışmak zorunda kalırsanız, bunu aklınızda bulundurun.</li>
+                    <li>Mesela neden Ataerkil zamanlardan daha evvel, daha yaygın olan ve yine binlerce yıl pek çok yerde kadınlara daha çok destek vermiş <strong>Anaerkil zamanlardaki eşitliksizlikten</strong> bahsetmiyorlar? Sonuçta bu toplumlar kendilerince kadınlara daha çok önem atfediyordu, ki bu da onlara ayrıcalık ve daha çok konfor olarak dönüyordu.</li>
+                    <li>Hatta, en sevdiğim ve mantıklı olan, neden yakın geçmiş değilde, <strong>nispeten uzak geçmişe</strong> bakıyoruz. Yani neden 30-40 yıl öncesi değil de, 150-200 yıl öncesi baz alınıyor?</li>
+                    <li>Mesela bir kadın "biz 100 yıl önce devlet yüzünden oy atamadık, okula gidemedik, mal mülk sahibi olamadık, bu yüzden devlet bize daha çok bakmalı" kafa yapısına sahipse, siz de aynı şekilde <strong>daha 10-20 yıl önce</strong> (hatta 2 saniye önce) devletin size zorunlu kölelik dayattığı, geç emekli ettiği, kadınları kayırdığı gerekçesiyle aynı şekilde karşılık verebilirsiniz.</li>
+                    <li>Hem de üstelik bunu diyen hiçbir kadın, muhtemelen devlet yüzünden oy atamamış, işe girememiş, mülk edinememiş bir kadın gösteremezken, siz devlet yüzünden <strong>daha dün negatif ayrıma uğramış</strong>, geç emekli olmuş, zorunlu köleliğe tabi tutulmuş bir sürü erkek bulabilirsiniz.</li>
+                    <li>Bu yüzden bir kadın 100-150 yıl önce, bugün yaşamayan kadınlara bile baskı vardı diye kendince şu anki kadınlara adalet talep ediyorsa, sizler de rahatlıkla 10-20 yıl önce, üstelik <strong>bugün hala hayatta olan</strong>, erkekler için adalet talep edebilirsiniz. Yani, siz de adalet yerini bulsun diye şu anki düzenin tam aksine <strong>kadınlara zorunlu köleliği ve geç emekliliği</strong> savunabilir, erkeklere pozitif ayrımcılığı dillendirebilirsiniz.</li>
+                    <li>Belki uzun oldu ama, en önemlisi buydu. Şu anlaşılmalı; bir kadın çıkıp, taaa ebesinin hörekesinde bilmem hangi yüzyılda kadınlara haksızlık yapıldı bahanesiyle adalet talep edip, aklımca <strong>HİÇ YAŞAMADIĞI</strong> bir dönem için ek hak istiyorsa, bir erkek de <strong>DİREKT YAŞADIĞI</strong>, hemen 10 yıl öncesi olan olaylar için de aynı küstahlıkla hak talep edebilir.</li>
+                    <li>Üstelik erkeğin gösterebileceği <strong>bir sürü vaka varken</strong> (zorunlu kölelik, geç emeklilik, negatif ayrım), kadının gösterebileceği bir tane örnek yok muhtemelen. Bu yüzde söz konusu "Eşitlik" değil "Adalet" ise, herkese eşit zorunluk kölelik veya emeklilik değil, <strong>kadınlara zorunlu kölelik ve geç emeklilik</strong> dayatmak gerekir. Çünkü geçmişte (ki bizi ilgilendiren geçmişte), onlara değil bize haksızlık yapıldı.</li>
+                    <li>Onlar bahsettikleri tarzda bir Ataerki görmedi, <strong>HİÇBİR ZAMAN</strong> oy kullanma, müşk edinme ve eğitim alma haklarından olmadılar, hatta ek haklar aldılar. Biz ise zorunlu köleliğe tabi tutulduk, geç emekli ediliyoruz ve devlet hiç bizi kayırmadı.</li>
+                    <li>Bu yüzden <strong>TAM ŞU AN "Adalet" sağlanacaksa</strong>, bizim değil, onların negatif ayrıma tabi tutulmaları gerek, çünkü GEÇMİŞTE ayrımcılığa uğrayanlar ŞU ANKİ kadınlar değildi, ama <strong>ŞU ANKİ erkeklerdi</strong>.</li>
+                </ul>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="highlight">
+                <h2>Kısaca Anlamak Gerekirse (yani TL;DR)</h2>
+                <ul>
+                    <li>Bugünkü sistem <strong>Ataerkil falan değil</strong>, çünkü Ataerkil sistem erkeğe hak ve güç verir. Bugünkü sistem ancak bozulmuş bir Ataerki ya da <strong>Ataerki sanılan Anaerki</strong> olabilir.</li>
+                    <li>Uzak geçmişte, tanıklarının bugün yaşamadığı olaylar için herhangi bir kadının, bugün ekstra hak talep etmesi, bir Fransız bir Türk'ü bıçakladı diye, bir Türk'ün de bir Fransız'ı bıçaklamasına denktir (ki yine bu olay günümüzde oluyor, 1 asır önce değil). Hatta aynı kafa yapısıyla <strong>"doğada karadul ve peygamber devesi gibi dişiler erkeklerini öldürdüğü için"</strong> bugünkü erkeklerin de adalet için kadın öldürmesi hak arayışı denebilir.</li>
+                    <li>Yani geçmişte kadınlar daha çok acı çekti diye ek hak istiyorlarsa, bugün erkekler de <strong>yakın geçmişte, daha düne kadar</strong>, acı çekti diye ek hak talep edebilirler. Hikayeyi <strong>yaşayanların yaşamadığı yüzyıllar öncesi</strong> yerine, <strong>yaşayanların yaşadığı onyıllar öncesinden</strong> başlatmak daha mantıklı sonuçta.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>İletişim</h2>
+                <p>Eğer benimle iletişime geçmek, yahut eklememi istediğiniz veya genel geri dönüş vermek istediğiniz bir konu varsa, şu email adresine yazabilirsiniz:</p>
+                <div class="contact-box">
+                    <i class="fas fa-envelope" style="margin-right: 10px; color: #e74c3c;"></i>
+                    <a href="mailto:erkekbilgilendirmeprojesi@protonmail.com">erkekbilgilendirmeprojesi@protonmail.com</a>
+                </div>
+
+                <div class="share-section">
+                    <h2>İçeriği Paylaş</h2>
+                    <div class="action-buttons">
+                        <button class="btn" onclick="copyToClipboard('temel-argumanlar')">
+                            <i class="fas fa-copy"></i> Panoya Kopyala
+                        </button>
+                    </div>
+                    <div class="share-buttons">
+                        <button class="share-btn twitter" onclick="shareOnTwitter('temel-argumanlar')">
+                            <i class="fab fa-twitter"></i> Twitter'da Paylaş
+                        </button>
+                        <button class="share-btn whatsapp" onclick="shareOnWhatsApp('temel-argumanlar')">
+                            <i class="fab fa-whatsapp"></i> WhatsApp'ta Paylaş
+                        </button>
+                        <button class="share-btn telegram" onclick="shareOnTelegram('temel-argumanlar')">
+                            <i class="fab fa-telegram"></i> Telegram'da Paylaş
+                        </button>
+                        <button class="share-btn copy-url" onclick="copyPageUrl()">
+                            <i class="fas fa-link"></i> Bağlantıyı Kopyala
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="tavsiyelerim" class="page">
+            <h1>Tavsiyelerim</h1>
+            
+            <section>
+                <h2>Bu devlete karşı, erkeklere genelde şu tavsiyeleri veriyorum.</h2>
+                <ul>
+                    <li>Erkekler bilmelidir ki, kurtuluş büyük oranda <strong>yurt dışına yerleşmekte</strong>, ve kendilerine gerçekten eşit hakların sunulduğu ülkelerde yaşamakta geçer. Bu kolay değil tabi, ama imkansız da değil. Gözünüz açık olsun yeter.</li>
+                    <li>Genelde <strong>Batı ülkelerini tercih edin</strong>, çünkü onlar cinsiyet eşitliği konusunda daha hassaslar. Elbette oralarda da Woke ve Feminizm güçlü, ben de biliyorum. AMA ÖNEMLİ OLAN ŞU Kİ, erkekler keriz değil, benim gibi…</li>
+                    <li>… Türkiye'deki çoğu erkek, hala geleneksel düşünen, modern-Batılı olamamış <strong>keriz erkeklerden</strong>. Batı ise gerçekten farklı. Burada sokakta, hele zenciyse, biri bir kadına dayak atsa, çoğu kişi erkeğe olmuş gibi aynı tepkiyi verip meriçliğe soyunmaz. Ama Türkiye'de her yerden <strong>abaza kılıbık pörtler</strong>.</li>
+                </ul>
+            </section>
+
+            <div class="divider"></div>
+
+            <section class="highlight">
+                <ul>
+                    <li>Ayrıca naçizane tavsiyem en azından Türkiye için <strong>ASLA ama ASLA çocuk sahibi olmamanızdır</strong>. Yani bir nevi Antinatalist davranmanızdır. Eğer oğlunuz olursa kadın yalakası bu boktan çadır devletinde olmamış olsun.</li>
+                    <li>Son olarak… Kafası çalışan tüm erkekler bu yazdıklarımı <strong>not almalı ve asla unutmamalıdır</strong>. Kopyalayıp bir yere kaydedin. Ara sıra açıp okuyun. Çünkü bir kaç gün içinde unutacaksınız ve <strong>sömürülmeye devam edeceksiniz</strong>.</li>
+                    <li>Kopyalama kolay olsun diye her sayfaya, hem <strong>"panoya kopyala" hem de "PDF indir"</strong> seçeneği koydum.</li>
+                    <li>Bir diğer tavsiyem ise, farkındalık için, <strong>bu yazdıklarımı paylaşmanızdır</strong>. Tamamen kendi görüşünüz gibi paylaşabilirsiniz, zaten "copyright" gibi bir durum yok. Yeter ki fikir yayılsın.</li>
+                </ul>
+            </section>
+
+            <section class="share-section">
+                <h2>İçeriği Paylaş</h2>
+                <div class="action-buttons">
+                    <button class="btn" onclick="copyToClipboard('tavsiyelerim')">
+                        <i class="fas fa-copy"></i> Panoya Kopyala
+                    </button>
+                    <button class="btn" onclick="generatePDF('tavsiyelerim')">
+                        <i class="fas fa-file-pdf"></i> PDF İndir
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <div id="yapilacaklar" class="page">
+            <h1>Yapılacaklar Listem</h1>
+            
+            <section>
+                <ul>
+                    <li>Çoğu insanın <strong>okumadığını, izlediğini</strong> Twitter'da yıllarca tecrübe ettim. Orada bile Instagram'dan falan video olunca insanlar daha çok ilgileniyorlardı.</li>
+                    <li>Bu yüzden bu site sadece <strong>referans olarak tasarlandı</strong>, sizler gibi okuyucular içeriği kopyalayıp farklı mecralarda paylaşsınlar diye.</li>
+                    <li>Genel halka hitap için ise <strong>Yapay Zeka destekli animasyonlar</strong> ile hikayeleştirilmiş videolar yapmayı düşünüyorum. En çok TikTok ve YouTube Shorts izlendiği için, galiba oradan başlayacağım.</li>
+                    <li>Bunun dışında tavsiyeleriniz varsa, şu email adresine yazabilirsiniz; <strong>erkekbilgilendirmeprojesi@protonmail.com</strong></li>
+                </ul>
+            </section>
+            
+            <div class="divider"></div>
+            
+            <section class="share-section">
+                <h2>İçeriği Paylaş</h2>
+                <div class="action-buttons">
+                    <button class="btn" onclick="copyToClipboard('yapilacaklar')">
+                        <i class="fas fa-copy"></i> Panoya Kopyala
+                    </button>
+                    <button class="btn" onclick="generatePDF('yapilacaklar')">
+                        <i class="fas fa-file-pdf"></i> PDF İndir
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-text">
+            Erkekleri Bilgilendirme Projesi
+        </div>
+        <div class="social-icons">
+            <a href="https://tiktok.com/@placeholder" target="_blank" aria-label="TikTok">
+                <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="https://instagram.com/placeholder" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://youtube.com/@placeholder" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Track scroll position to show/hide navbar
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // If scrolling down and past 100px from top, hide navbar
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                navbar.classList.add('navbar-hidden');
+            } 
+            // If scrolling up, show navbar
+            else {
+                navbar.classList.remove('navbar-hidden');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+            
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close mobile menu when clicking a menu item
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('.nav-menu').classList.remove('active');
+                document.querySelector('.menu-toggle i').classList.remove('fa-times');
+                document.querySelector('.menu-toggle i').classList.add('fa-bars');
+            });
+        });
+        
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Scroll to top when changing pages
+            window.scrollTo(0, 0);
+        }
+        
+        // Copy content to clipboard
+        function copyToClipboard(pageId) {
+            const content = document.getElementById(pageId).innerText;
+            navigator.clipboard.writeText(content)
+                .then(() => {
+                    showNotification('İçerik panoya kopyalandı!');
+                })
+                .catch(err => {
+                    console.error('Kopyalama hatası:', err);
+                    showNotification('Kopyalama başarısız.', true);
+                });
+        }
+        
+        // Copy current page URL to clipboard
+        function copyPageUrl() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url)
+                .then(() => {
+                    showNotification('Sayfa bağlantısı panoya kopyalandı!');
+                })
+                .catch(err => {
+                    console.error('URL kopyalama hatası:', err);
+                    showNotification('URL kopyalama başarısız.', true);
+                });
+        }
+        
+        // Share on Twitter/X
+        function shareOnTwitter(pageId) {
+            const title = document.getElementById(pageId).querySelector('h1').innerText;
+            const url = window.location.href;
+            const text = `${title} - Erkekleri Bilgilendirme Projesi`;
+            
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            window.open(twitterUrl, '_blank');
+        }
+        
+        // Share on WhatsApp
+        function shareOnWhatsApp(pageId) {
+            const title = document.getElementById(pageId).querySelector('h1').innerText;
+            const url = window.location.href;
+            const text = `${title} - Erkekleri Bilgilendirme Projesi: ${url}`;
+            
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        // Share on Telegram
+        function shareOnTelegram(pageId) {
+            const title = document.getElementById(pageId).querySelector('h1').innerText;
+            const url = window.location.href;
+            const text = `${title} - Erkekleri Bilgilendirme Projesi`;
+            
+            const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+            window.open(telegramUrl, '_blank');
+        }
+        
+        // Custom notification system
+        function showNotification(message, isError = false) {
+            // Remove existing notification if present
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${isError ? 'error' : 'success'}`;
+            notification.textContent = message;
+            
+            // Style the notification
+            Object.assign(notification.style, {
+                position: 'fixed',
+                bottom: '20px',
+                right: '20px',
+                backgroundColor: isError ? '#e74c3c' : '#2ecc71',
+                color: 'white',
+                padding: '12px 20px',
+                borderRadius: '5px',
+                boxShadow: '0 3px 10px rgba(0,0,0,0.2)',
+                zIndex: '1000',
+                fontWeight: '600',
+                transition: 'all 0.3s ease',
+                opacity: '0',
+                transform: 'translateY(20px)'
+            });
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Auto dismiss after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(20px)';
+                
+                // Remove from DOM after animation completes
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
